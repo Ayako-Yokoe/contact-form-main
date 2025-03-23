@@ -32,7 +32,7 @@ Users should be able to:
 
 <img src="./assets/images/375px.png" alt="375px" width="auto" height="200">
 <img src="./assets/images/1440px.jpeg" alt="1440px" width="300" height="auto">
-<img src="./assets/images/1440px-success.jpeg" alt="1440px success" width="300" height="auto">
+<img src="./assets/images/1440px_success.jpeg" alt="1440px success" width="300" height="auto">
 
 ### Links
 
