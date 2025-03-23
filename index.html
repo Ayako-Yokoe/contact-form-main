@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  <link href="./style.css" rel="stylesheet" />
+  <script src="./script.js" defer></script>
+  
+  <title>Frontend Mentor | Contact form</title>
+
+</head>
+<body>
+  <section class="section">
+    <h1>Contact Us</h1>
+    <form class="form" novalidate>
+      <div class="name-wrapper">
+        <div class="name-field input-container">
+          <label for="first-name">First Name<span class="astarisk">*</span></label>
+          <input type="text" id="first-name" name="first-name" aria-describedby="first-name-error" required />
+          <p id="first-name-error" class="error-message" hidden>This field is required</p>
+        </div>
+        <div class="name-field input-container">
+          <label for="last-name">Last Name<span class="astarisk">*</span></label>
+          <input type="text" id="last-name" name="last-name" aria-describedby="last-name-error" required />
+          <p id="last-name-error" class="error-message" hidden>This field is required</p>
+        </div>
+      </div>
+      <div class="email-field input-container">
+        <label for="email">Email Address<span class="astarisk">*</span></label>
+        <input type="email" id="email" name="email" aria-describedby="email-error" required />
+        <p id="email-valid-error" class="error-message" hidden>Please enter a valid email address</p>
+        <p id="email-required-error" class="error-message" hidden>This field is required</p>
+      </div>
+      <fieldset aria-describedby="query-type-error">
+        <legend>Query Type<span class="astarisk">*</span></legend>
+        <div class="radio-wrapper">
+          <label class="radio-field" for="general-enquiry">
+            <input type="radio" id="general-enquiry" name="query-type" value="general-enquiry" required />
+            <span class="checkmark"></span>
+            General Enquiry
+          </label>
+          <label class="radio-field" for="support-request">
+            <input type="radio" id="support-request" name="query-type" value="support-request" />
+            <span class="checkmark"></span>
+            Support Request
+          </label>
+        </div>
+        <p id="query-type-error" class="error-message" hidden>Please select a query type</p>
+      </fieldset>
+      <div class="message-field input-container">
+        <label for="message">Message<span class="astarisk">*</span></label>
+        <textarea id="message" name="message" aria-describedby="message-error" required></textarea>
+        <p id="message-error" class="error-message" hidden>This field is required</p>
+      </div>
+      <fieldset>
+        <label class="consent-wrapper" for="consent">
+          <input type="checkbox" id="consent" name="consent" aria-describedby="consent-error" required />
+          <span class="consent-checkmark"></span>
+          <span class="consent-label">I consent to being contacted by the team<span class="astarisk-consent">*</span></span>
+        </label>
+        <p id="consent-error" class="error-message" hidden>To submit this form, please consent to being contacted</p>
+      </fieldset>
+      <button type="submit">Submit</button>
+    </form>
+  </section>
+
+  <div id="success-message" role="alert" class="success-wrapper" hidden>
+    <div class="success-top">
+      <img src="./assets/images/icon-success-check.svg" alt="success-icon" />
+      <p>Message Sent!</p>
+    </div>
+    <p class="success-bottom">Thanks for completing the form. We'll be in touch soon!</p>
+  </div>
+
+</body>
+</html>
