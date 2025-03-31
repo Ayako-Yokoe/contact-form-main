@@ -2,34 +2,54 @@ document.querySelector("form").addEventListener("submit", (e) => {
 	e.preventDefault();
 	let isValid = true;
 
-	// Validate Firstname
-	const fnameInput = document.getElementById("first-name");
-	const fnameError = document.getElementById("first-name-error");
+	const fields = [
+		{ id: "first-name", errorId: "first-name-error"},
+		{ id: "last-name", errorId: "last-name-error"},
+		{ id: "message", errorId: "message-error"},
+	];
 
-	if (!fnameInput.value.trim()) {
-		toggleAriaInvalid(fnameInput, false);
-		fnameError.classList.add("visible");
-		isValid = false;
-	} else {
-		toggleAriaInvalid(fnameInput, true);
-		fnameError.classList.remove("visible");
+	fields.forEach(field => {
+		if (!validateInput(field.id, field.errorId)) {
+			isValid = false;
+		}
+	})
+
+	if (!validateEmail("email")) isValid = false;
+	if (!validateRadio("general-enquiry", "support-request", "query-type-error")) isValid = false;
+	if (!validateCheckbox("consent", "consent-error")) isValid = false;
+
+	if(isValid) {
+		const successMessage = document.getElementById("success-message");
+		successMessage.style.display = "block";
 	}
+});
 
-	// Validate Lastname
-	const lnameInput = document.getElementById("last-name");
-	const lnameError = document.getElementById("last-name-error");
+document.addEventListener("DOMContentLoaded", function() {
+	document.querySelectorAll("input, textarea").forEach((input) => {
+		input.addEventListener("input", () => {
+			const errorId = `${input.id}-error`;
+			if(document.getElementById(errorId)){
+				validateInput(input.id, errorId)
+			}
+		})
 
-	if (!lnameInput.value.trim()) {
-		toggleAriaInvalid(lnameInput, false);
-		lnameError.classList.add("visible");
-		isValid = false;
-	} else {
-		toggleAriaInvalid(lnameInput, true);
-		lnameError.classList.remove("visible");
-	}
+		document.getElementById("email").addEventListener("input", () => validateEmail("email"));
+	})
+});
 
-	// Validate Email
-	const emailInput = document.getElementById("email");
+function validateInput(inputId, errorId) {
+	const input = document.getElementById(inputId);
+	const error = document.getElementById(errorId);
+	const isValid = input.value.trim() !== "";
+
+	toggleAriaInvalid(input, isValid);
+	error.classList.toggle("visible", !isValid);
+
+	return isValid;
+}
+
+function validateEmail(inputId) {
+	const emailInput = document.getElementById(inputId);
 	const emailRequiredError = document.getElementById("email-required-error");
 	const emailValidError = document.getElementById("email-valid-error");
 	
@@ -37,68 +57,57 @@ document.querySelector("form").addEventListener("submit", (e) => {
 		toggleAriaInvalid(emailInput, false);
 		emailRequiredError.classList.add("visible");
 		emailValidError.classList.remove("visible");
-		isValid = false;
-	} else if (!emailInput.validity.valid) {
+		return false;
+	} 
+
+	if (!emailInput.validity.valid) {
 		toggleAriaInvalid(emailInput, false);
 		emailRequiredError.classList.remove("visible");
 		emailValidError.classList.add("visible");
-		isValid = false;
-	} else {
-		toggleAriaInvalid(emailInput, true);
-		emailRequiredError.classList.remove("visible");
-		emailValidError.classList.remove("visible");
-	}
+		return false;
+	} 
 
-	// Validate Query Type
-	const generalEnquiryInput = document.getElementById("general-enquiry");
-	const supportRequestInput = document.getElementById("support-request");
-	const queryTypeError = document.getElementById("query-type-error");
+	toggleAriaInvalid(emailInput, true);
+	emailRequiredError.classList.remove("visible");
+	emailValidError.classList.remove("visible");
+	return true
+}
 
-	if (!(generalEnquiryInput.checked || supportRequestInput.checked)) {
-		queryTypeError.classList.add("visible");
-		isValid = false;
-	} else {
-		queryTypeError.classList.remove("visible");
-	}
+function validateRadio(id1, id2, errorId) {
+	const generalEnquiryInput = document.getElementById(id1);
+	const supportRequestInput = document.getElementById(id2);
+	const queryTypeError = document.getElementById(errorId);
+	const isValid = generalEnquiryInput.checked || supportRequestInput.checked;
 
-	// Validate Message
-	const messageInput = document.getElementById("message");
-	const messageError = document.getElementById("message-error");
+	queryTypeError.classList.toggle("visible", !isValid);
 
-	if (!messageInput.value.trim()) {
-		toggleAriaInvalid(messageInput, false);
-		messageError.classList.add("visible");
-		isValid = false;
-	} else {
-		toggleAriaInvalid(messageInput, true);
-		messageError.classList.remove("visible");
-	}
+	return isValid;
+}
 
-	// Validate Consent
-	const consentInput = document.getElementById("consent");
-	const consentError = document.getElementById("consent-error");
+document.addEventListener("DOMContentLoaded", function() {
+	const radio1 = document.getElementById("general-enquiry");
+	const radio2 = document.getElementById("support-request");
 
-	if (!consentInput.checked) {
-		toggleAriaInvalid(consentInput, false);
-		consentError.classList.add("visible");
-		isValid = false;
-	} else {
-		toggleAriaInvalid(consentInput, true);
-		consentError.classList.remove("visible");
-	}
-
-	function toggleAriaInvalid(input, isValid) {
-		if(isValid) {
-			input.removeAttribute("aria-invalid")
-		} else {
-			input.setAttribute("aria-invalid", "true")
-		}
-	}
-
-	// Show Success Message If Valid
-	if(isValid) {
-		const successMessage = document.getElementById("success-message");
-		successMessage.style.display = "block";
-	}
-
+	[radio1, radio2].forEach((radio) => {
+		radio.addEventListener("change", () => validateRadio("general-enquiry", "support-request", "query-type-error"));
+	})
 })
+
+function validateCheckbox(inputId, errorId){
+	const consentInput = document.getElementById(inputId);
+	const consentError = document.getElementById(errorId);
+	const isValid = consentInput.checked;
+
+	toggleAriaInvalid(consentInput, isValid);
+	consentError.classList.toggle("visible", !isValid);
+
+	return isValid;
+}
+
+function toggleAriaInvalid(input, isValid) {
+	if(isValid) {
+		input.removeAttribute("aria-invalid")
+	} else {
+		input.setAttribute("aria-invalid", "true")
+	}
+}
