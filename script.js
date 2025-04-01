@@ -32,9 +32,8 @@ document.addEventListener("DOMContentLoaded", function() {
 				validateInput(input.id, errorId)
 			}
 		})
-
-		document.getElementById("email").addEventListener("input", () => validateEmail("email"));
 	})
+	document.getElementById("email").addEventListener("input", () => validateEmail("email"));
 });
 
 function validateInput(inputId, errorId) {
